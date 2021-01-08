@@ -1,7 +1,6 @@
 library(shiny)
 library(tidyverse)
 library(gapminder)
-library(data.table)
 
 g7 <-
     c("United Kindom", "United States", "France", "Italy", "Germany", "Japan")
