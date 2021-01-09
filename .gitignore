@@ -2,6 +2,8 @@
 .Rhistory
 .Rapp.history
 
+wpa_supplicant.conf
+
 # Session Data files
 .RData
 

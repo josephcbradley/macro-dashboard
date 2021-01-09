@@ -1,7 +1,7 @@
 #!/bin/bash
 
 sudo adduser macro-dash #pw macro-dash
-sudo usermod -aG sudo macro-dash
+#sudo usermod -aG sudo macro-dash
 
 sudo apt update
 sudo apt -y install nginx
@@ -15,12 +15,12 @@ sudo /sbin/mkswap /var/swap.1
 sudo /sbin/swapon /var/swap.1
 sudo sh -c 'echo "/var/swap.1 swap swap defaults 0 0 " >> /etc/fstab'
 
-sudo apt -y install libcurl4-gnutls-dev libxml2-dev libssl-dev libgit2-dev
+sudo apt -y install libcurl4-gnutls-dev libxml2-dev libssl-dev libgit2-dev libfontconfig1-dev libharfbuzz-dev libfribidi-dev libfreetype6-dev libpng-dev libtiff5-dev libjpeg-dev
 
-cd /home/macro-dash
+#cd /home/macro-dash
 
-sudo apt -y install git
-git pull https://github.com/josephcbradley/macro-dashboard.git 
+#sudo apt -y install git
+#git pull https://github.com/josephcbradley/macro-dashboard.git 
 
 Rscript setup.R
 
@@ -37,6 +37,6 @@ sudo chmod g+w .
 sudo chmod g+s .
 
 sudo mv /etc/nginx/sites-enabled/default /etc/nginx/sites-enabled/default.old
-sudo cp /home/macro-dash/macro-dashboard/config/default /etc/nginx/sites-enabled/default
+sudo cp ~/macro-dash/macro-dashboard/config/default /etc/nginx/sites-enabled/default
 sudo service nginx restart
 

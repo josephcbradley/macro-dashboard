@@ -19,7 +19,7 @@ sudo /sbin/mkswap /var/swap.1
 sudo /sbin/swapon /var/swap.1
 sudo sh -c 'echo "/var/swap.1 swap swap defaults 0 0 " >> /etc/fstab'
 
-sudo apt -y install libcurl4-gnutls-dev libxml2-dev libssl-dev libgit2-dev
+sudo apt -y install libcurl4-gnutls-dev libxml2-dev libssl-dev libgit2-dev libfontconfig1-dev libharfbuzz-dev libfribidi-dev libfreetype6-dev libpng-dev libtiff5-dev libjpeg-dev
 
 cd /home/macro-dash
 
