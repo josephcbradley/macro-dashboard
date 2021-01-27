@@ -1,14 +1,20 @@
 library(shiny)
-library(tidyverse)
+library(ggplot2)
 library(gapminder)
+library(data.table)
 
 g7 <-
     c("United Kindom", "United States", "France", "Italy", "Germany", "Japan")
 
-gapm <- gapminder::gapminder %>%
-    filter(country %in% g7) %>%
-    select(country, year, gdpPercap, lifeExp) %>%
-    group_by(country)
+gapm <- 
+    as.data.table(gapminder::gapminder)[
+        country %in% g7, 
+        .(country, year, gdpPercap, lifeExp),
+        ]
+
+
+
+
 
 # 1952- 2007, 5s
 
@@ -17,15 +23,11 @@ gapm <- gapminder::gapminder %>%
 shinyServer(function(input, output) {
 
     output$gdpPcPlot <- renderPlot({
+        plot_data <- gapm[, index := (100*gdpPercap)/gdpPercap[year==input$base_year], by = country]
         
-        gapm %>% 
-            group_modify(
-                ~mutate(.x,
-                        base = gdpPercap[which(year == input$base_year)],
-                        index = (gdpPercap / base) * 100
-                )
-            ) %>%
-            ggplot(aes(x = year, colour = country, y = index)) +
+            ggplot(
+                plot_data,
+                aes(x = year, colour = country, y = index)) +
             geom_line() +
             scale_x_continuous(NULL) +
             scale_y_continuous(NULL) +
@@ -38,14 +40,11 @@ shinyServer(function(input, output) {
     
     output$popPlot <- renderPlot({
         
-        gapm %>% 
-            group_modify(
-                ~mutate(.x,
-                        base = lifeExp[which(year == input$base_year)],
-                        index = (lifeExp / base) * 100
-                )
-            ) %>%
-            ggplot(aes(x = year, colour = country, y = index)) +
+        plot_data <- gapm[, index := (100*lifeExp)/lifeExp[year==input$base_year], by = country]
+        
+        ggplot(
+            plot_data,
+            aes(x = year, colour = country, y = index)) +
             geom_line() +
             scale_x_continuous(NULL) +
             scale_y_continuous(NULL) +
@@ -53,7 +52,6 @@ shinyServer(function(input, output) {
                 title = "Life expectancy",
                 subtitle = sprintf("%s = 100", input$base_year)
             )
-        
     })
 
 })
